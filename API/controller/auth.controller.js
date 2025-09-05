@@ -6,6 +6,19 @@ export const signUp = async (req, res) => {
   try {
     const { fullName, email, password, mobile, role } = req.body;
 
+    if(!fullName?.trim()){
+      return res.status(400).json({message: "Please Enter the full Name."})
+    }
+    if(!email?.trim()){
+      return res.status(400).json({message: "Please Enter the email"})
+    }
+    if(!password?.trim()){
+      return res.status(400).json({message: "Please Enter the password"})
+    }
+    if(!mobile?.trim()){
+      return res.status(400).json({message: "Please Enter your mobile No."})
+    }
+
     let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ message: "user already exists." });
@@ -46,6 +59,12 @@ export const signUp = async (req, res) => {
 export const signIn = async (req, res) => {
   try {
     const { email, password } = req.body;
+    if(!email.trim()){
+      return res.status(400).json({message: "Please Enter the email."})
+    }
+    if(!password.trim()){
+      return res.status(400).json({message: "Please Enter the password."})
+    }
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "User does not exists." });

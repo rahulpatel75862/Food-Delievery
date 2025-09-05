@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { serverUrl } from "../App";
+import { toast } from "react-toastify";
 
 const signUp = () => {
   const primaryColor = "#ff4d2d";
@@ -19,7 +20,7 @@ const signUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mobile, setMobile] = useState("");
-  
+
   const handleSignUp = async () => {
     try {
       const result = await axios.post(
@@ -33,12 +34,17 @@ const signUp = () => {
         },
         { withCredentials: true }
       );
-      setFullName("")
+      toast.success("User Created Successfully");
+      setFullName("");
       setEmail("");
-      setMobile("")
-      setPassword("")
+      setMobile("");
+      setPassword("");
     } catch (error) {
-      console.log("error", error);
+      if (error.response && error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("something went wrong.");
+      }
     }
   };
 
@@ -119,7 +125,7 @@ const signUp = () => {
             <input
               type={showPassword ? "text" : "password"}
               className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:border-orange-500 "
-              placeholder="Enter your full name"
+              placeholder="Enter your Password"
               style={{ border: `1px solid ${borderColor}` }}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
